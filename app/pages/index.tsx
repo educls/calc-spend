@@ -7,6 +7,7 @@ import { Label } from "@/components/ui/label"
 import { Progress } from "@/components/ui/progress"
 import { PieChart, Pie, Cell, BarChart, Bar, XAxis, YAxis, ResponsiveContainer } from "recharts"
 import { ChartContainer, ChartTooltip, ChartTooltipContent } from "@/components/ui/chart"
+import { ThemeSwitch } from "@/components/theme_switch"
 
 export default function CalcSpend() {
   const [salario, setSalario] = useState(0)
@@ -20,12 +21,13 @@ export default function CalcSpend() {
   const porcentagemSobras = salario > 0 ? (sobras / salario) * 100 : 0
 
   const dadosGrafico = [
-    { name: "Gastos Fixos", value: gastosFixos },
-    { name: "Gastos Extras", value: gastosExtras },
-    { name: "Gastos Sazonais", value: gastosSazonais },
+    { name: "Fixos", value: gastosFixos },
+    { name: "Extras", value: gastosExtras },
+    { name: "Sazonais", value: gastosSazonais },
   ]
 
   const dadosComparacao = [
+    { name: "Salário", value: salario },
     { name: "Total de Gastos", value: totalGastos },
     { name: "Sobras", value: sobras },
   ]
@@ -33,7 +35,7 @@ export default function CalcSpend() {
   const CORES = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042"]
 
   return (
-    <Card className="w-full max-w-7xl mx-auto">
+    <Card className="w-full max-w-7xl mx-auto pt-8">
       <CardHeader className="flex items-center">
         <CardTitle className="text-3xl">Calculadora de Gastos Mensais</CardTitle>
         <CardDescription>Insira seus dados financeiros para calcular seus gastos</CardDescription>
@@ -90,9 +92,9 @@ export default function CalcSpend() {
               </div>
             </div>
           </div>
-          <div className="space-y-8 mt-6">
+          <div className="space-y-8">
             <div>
-              <h3 className="text-xl font-semibold mb-2">Resumo</h3>
+              <h3 className="text-xl font-semibold mb-2 mt-8 md:mt-0">Resumo</h3>
               <div className="grid gap-2">
                 <div className="flex justify-between border-b-2">
                   <span>Total de Gastos:</span>
@@ -130,25 +132,26 @@ export default function CalcSpend() {
                       cx="50%"
                       cy="50%"
                       labelLine={true}
-                      outerRadius={60}
+                      outerRadius={100}
                       fill="#8884d"
                       dataKey="value"
                       label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                      onMouseOver={(e) => e.target.style.cursor = "pointer"}
                     >
                       {dadosGrafico.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={CORES[index % CORES.length]} />
                       ))}
                     </Pie>
+
                     <ChartTooltip content={<ChartTooltipContent />} />
                   </PieChart>
                 </ResponsiveContainer>
               </ChartContainer>
             </CardContent>
           </Card>
-
           <Card className="w-full max-w-xl mx-auto">
             <CardHeader>
-              <CardTitle>Gastos x Sobras</CardTitle>
+              <CardTitle>Salário x Gastos x Sobras</CardTitle>
             </CardHeader>
             <CardContent className="w-full">
               <ChartContainer className="h-[300px] w-full" config={{ /* config */ }}>
@@ -157,7 +160,7 @@ export default function CalcSpend() {
                     <XAxis dataKey="name" />
                     <YAxis />
                     <ChartTooltip content={<ChartTooltipContent />} />
-                    <Bar dataKey="value" fill="#8884d8">
+                    <Bar dataKey="value" fill="#8884d8" barSize={50}>
                       {dadosComparacao.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={CORES[index % CORES.length]} />
                       ))}
@@ -169,6 +172,9 @@ export default function CalcSpend() {
           </Card>
         </div>
       </CardContent>
+      <div className="fixed top-4 right-4 p-3 rounded-full shadow-lg bg-gray-700">
+        <ThemeSwitch></ThemeSwitch>
+      </div>
     </Card>
   )
 }

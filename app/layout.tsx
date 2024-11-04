@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Roboto } from '@next/font/google';
+import { ThemeProvider } from "@/components/theme_provider"
 
 const roboto = Roboto({
   weight: ['400', '700'],
@@ -14,7 +15,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={roboto.className}>
-        {children}
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
       </body>
     </html>
   );
