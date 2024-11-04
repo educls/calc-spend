@@ -136,13 +136,11 @@ export default function CalcSpend() {
                       fill="#8884d"
                       dataKey="value"
                       label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
-                      onMouseOver={(e) => e.target.style.cursor = "pointer"}
                     >
                       {dadosGrafico.map((entry, index) => (
                         <Cell key={`cell-${index}`} fill={CORES[index % CORES.length]} />
                       ))}
                     </Pie>
-
                     <ChartTooltip content={<ChartTooltipContent />} />
                   </PieChart>
                 </ResponsiveContainer>
